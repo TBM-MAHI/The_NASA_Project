@@ -1,8 +1,8 @@
 let planetsModel = require("../../model/planets.model");
 
-function http_getAllPlanets(req, res) {
+async function http_getAllPlanets(req, res) {
   //console.log(planets)
-  return res.status(200).json(planetsModel.getAllPlanets());
+  return res.status(200).json(await planetsModel.getAllPlanets());
 }
 
 module.exports = { http_getAllPlanets };

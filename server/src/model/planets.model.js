@@ -1,7 +1,7 @@
+let planets = require("./planets.mongo");
 const { parse } = require("csv-parse");
 const fs = require("fs");
 const path = require("path");
-let habitablePlanets = [];
 /* 
 fs.createReadStream( ) returns an instance of the class Class: fs.ReadStream
 fs.ReadStream has events that are being handled/
@@ -18,12 +18,15 @@ function loadPlanetsDatafromCSV() {
         })
       )
       .on("data", (planetData) => {
-        if (isHabitable(planetData))
-          habitablePlanets.push(planetData);
+        if (isHabitable(planetData) )
+          //Replace below create with Update + Insert = Upsert
+          savePlanetsToCollection(planetData)
       })
-      .on("error", (err) => reject(err) )
-      .on("end", () => {
-        console.log("fetching data from CSV complete.");
+      .on("error", (err) => reject(err))
+      .on("end", async () => {
+        let habitablePlanets = await getAllPlanets();
+
+        console.log(`${habitablePlanets.length } planets Found!`);
         resolve();
         //for (let names of habitablePlanetsNames) console.log(`\t ${names}`);
       });
@@ -39,10 +42,27 @@ function loadPlanetsDatafromCSV() {
     }
   });
 }
-function getAllPlanets() {
-  return habitablePlanets
+async function getAllPlanets() {
+  return await planets.find({}, [ 'keplerName','-_id' ]);
 }
+
+async function savePlanetsToCollection(planetData) {
+  try {
+    await planets.updateOne(
+      {
+        keplerName: planetData.kepler_name,
+      },
+      {
+        keplerName: planetData.kepler_name,
+      },
+      { upsert: true }
+    );
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 module.exports = {
   loadPlanetsDatafromCSV,
-  getAllPlanets
+  getAllPlanets,
 };

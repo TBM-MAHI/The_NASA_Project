@@ -4,19 +4,25 @@
   "description": "NASA Mission ControL-API",
   "main": "src/server.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --detectOpenHandles",
     "jest-watch": "jest --watch",
     "start": "node src/server.js",
-    "watch": "nodemon src/server.js"
+    "watch": "nodemon src/server.js",
+    "cluster": "npx pm2 start src/server.js -i max"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "jest":{
+      "testEnvironment":"node"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "csv-parse": "^5.3.8",
     "express": "^4.18.2",
+    "mongoose": "^7.2.0",
     "morgan": "^1.10.0",
+    "pm2": "^5.3.0",
     "validator": "^13.9.0"
   },
   "devDependencies": {
