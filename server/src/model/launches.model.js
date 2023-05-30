@@ -1,7 +1,10 @@
+let axios = require('axios')
 let launchesCollection = require("./launches.mongo.js");
+
 let planets = require("./planets.mongo");
 let launches = new Map();
 const DEFAULT_FLIGHT_NUMBER = 100;
+const SPACEX_LAUNCHES_API_URL = "https://api.spacexdata.com/v4/launches/query";
 
 const launch = {
   flightNumber: 100,
@@ -24,12 +27,103 @@ async function schedule_NewLaunch(launch) {
     upcoming: true,
     success: true,
   };
-  try {
-    await saveLaunches(completeLaunchData);
-  } catch (error) {
-    console.log(error)
-   
+  let planetFromCollec = await planets.findOne({
+    keplerName: launch.destination,
+  });
+
+  if (planetFromCollec) {
+    try {
+      await saveLaunches(completeLaunchData);
+    } catch (error) {
+      console.log(error);
+    }
+  } else throw new Error("Invalid planet");
 }
+
+async function loadspaceXlaunch_Data() {
+  let launchRes = await findLaunch({
+    flightNumber: 1,
+    missionName: "FalconSat",
+    rocket: "Falcon 1",
+    customers: ["DARPA"],
+  });
+
+ if (launchRes) {
+    console.log(`launch Data already exists ${ launchRes }`);
+    return;
+  } else {
+    populate_spaceX_launch_Data();
+  }
+}
+async function populate_spaceX_launch_Data() { 
+  console.log(`Downloading Launch Data from SpacexAPI....`)
+  let response = await axios.post(SPACEX_LAUNCHES_API_URL, {
+    query: {},
+    options: {
+      populate: [
+        {
+          path: "rocket",
+          select: {
+            name: 1,
+          },
+        },
+        {
+          path: "launchpad",
+          select: {
+            name: 1,
+          },
+        },
+        {
+          path: "payloads",
+          select: {
+            customers: 1,
+          },
+        },
+      ],
+      select: [
+        "flight_number",
+        "name",
+        "date_local",
+        "rocket",
+        "success",
+        "failures",
+        "payloads",
+        "launchpad",
+        "upcoming",
+      ],
+      pagination: false,
+    },
+  });
+ 
+  if (response.status === 200) { 
+
+    let { docs } = response.data;
+    for (let doc of docs) {
+      let {
+        success,
+        name,
+        flight_number,
+        rocket,
+        upcoming,
+        date_local,
+        payloads,
+      } = doc;
+      let launch = {
+        flightNumber: flight_number,
+        missionName: name,
+        rocket: rocket["name"],
+        launchDate: date_local,
+        customers: payloads.flatMap((load) => load["customers"]),
+        upcoming,
+        success,
+      };
+      saveLaunches(launch)
+      console.log(launch.flightNumber+". "+launch.missionName);
+    }
+  }
+  else {
+    console.log(`eroe fetch data from spacex API`)
+  }
 }
 
 async function addNewLaunchMap(launch) {
@@ -47,9 +141,12 @@ async function getAll_Launches() {
   // it will only return the launch Fields excluding the _id, __v field
   return await launchesCollection.find({}, [ '-_id', '-__v' ]);
 }
+async function findLaunch(filter) { 
+return await launchesCollection.findOne(filter);
+}
 
 async function launchIDexists(launchid) {
-  return await launchesCollection.findOne({ flightNumber: launchid });
+  return await findLaunch({ flightNumber: launchid });
 }
 
 async function getLatest_Flight_Number() {
@@ -60,12 +157,7 @@ async function getLatest_Flight_Number() {
 }
 
 async function saveLaunches(launch) {
-  let planetFromCollec = await planets.findOne({
-    keplerName: launch.destination,
-  });
-  //console.log(planetFromCollec);
-  if (planetFromCollec) {
-    const res = await launchesCollection.findOneAndUpdate(
+ const res = await launchesCollection.findOneAndUpdate(
       {
         flightNumber: launch.flightNumber,
       },
@@ -75,7 +167,6 @@ async function saveLaunches(launch) {
       }
     );
     //console.log(" new Launch data Inserted :", res.acknowledged);
-  } else throw new Error("Invalid planet");
 }
 
 async function abortlaunch_by_ID(launchid) {
@@ -98,4 +189,5 @@ module.exports = {
   schedule_NewLaunch,
   launchIDexists,
   abortlaunch_by_ID,
+  loadspaceXlaunch_Data,
 };

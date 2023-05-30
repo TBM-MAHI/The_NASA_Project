@@ -1,21 +1,23 @@
 const request = require("supertest");
 let app = require("../../app");
-let {ConnectDB} = require("../../services/mongo.services");
+let { ConnectDB,disconnectDB } = require("../../services/mongo.services");
 
 describe("Launches API", () => {
   beforeAll( async () => {
     await ConnectDB();
   })
+  afterAll( async () => {
+    await disconnectDB();
+  })
 
   describe("TEST GET /launches", () => {
     test("should response with 200 success", async () => {
       await request(app)
-        .get("/launches")
+        .get("/v1/launches")
         .expect(200)
         .expect("content-type", /json/);
-
       // expect(response.statusCode).toBe(200);
-    }, 15000);
+    });
   });
 
   describe("TEST POST /launches", () => {
@@ -44,7 +46,7 @@ describe("Launches API", () => {
 
     test("It should respond with 201 created", async () => {
       let response = await request(app)
-        .post("/launches")
+        .post("/v1/launches")
         .send(completeLaunchData)
         .expect(201)
         .expect("content-type", /json/);
@@ -62,7 +64,7 @@ describe("Launches API", () => {
         error: "Missing required launch Data",
       };
       let response = await request(app)
-        .post("/launches")
+        .post("/v1/launches")
         .send(IncompleteLaunchData)
         .expect(400)
         .expect("content-type", /json/);
@@ -73,7 +75,7 @@ describe("Launches API", () => {
     });
     test("It should catch Invalid dates", async () => {
       const response = await request(app)
-        .post("/launches")
+        .post("/v1/launches")
         .send(launchDataWith_Invalid_Date)
         .expect("Content-Type", /json/)
         .expect(400);
