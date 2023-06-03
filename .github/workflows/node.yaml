@@ -1,13 +1,13 @@
-name : THE NASA PROJECT CI
-on : 
+name: THE NASA PROJECT CI
+on: 
     push:
       branches: [ master ]
     pull_request :
       branches: [ master ]
-jobs :
+jobs:
     build:
       runs-on: ubuntu-latest
-      steps : 
+      steps: 
         - uses: actions/checkout@v2
         - name: Use Node.js version 16
           uses : actions/setup-node@v2 
