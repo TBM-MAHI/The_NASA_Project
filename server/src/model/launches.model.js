@@ -6,16 +6,6 @@ let launches = new Map();
 const DEFAULT_FLIGHT_NUMBER = 100;
 const SPACEX_LAUNCHES_API_URL = "https://api.spacexdata.com/v4/launches/query";
 
-const launch = {
-  flightNumber: 100,
-  missionName: "kepler Exploration X",
-  rocket: "Explorer IS1",
-  launchDate: new Date("December 27,2030"),
-  destination: "kepler-442b",
-  customers: ["spaceX", "USSR"],
-  upcoming: true,
-  success: true,
-};
 
 async function schedule_NewLaunch(launch) {
   let latestFlightNumber = await getLatest_Flight_Number();
@@ -49,7 +39,7 @@ async function loadspaceXlaunch_Data() {
   });
 
  if (launchRes) {
-    console.log(`launch Data already exists ${ launchRes }`);
+    console.log(`launch Data already exists`);
     return;
   } else {
     populate_spaceX_launch_Data();
@@ -137,12 +127,17 @@ async function addNewLaunchMap(launch) {
   launches.set(DEFAULT_FLIGHT_NUMBER, completeLaunchData);
 }
 
-async function getAll_Launches() {
+async function getAll_Launches(skip, limit) {
   // it will only return the launch Fields excluding the _id, __v field
-  return await launchesCollection.find({}, [ '-_id', '-__v' ]);
+return await launchesCollection
+    .find({}, ["-_id", "-__v"])
+    .skip(skip)
+    .limit(limit)
+    .sort({flightNumber :'asc'});
 }
+
 async function findLaunch(filter) { 
-return await launchesCollection.findOne(filter);
+  return await launchesCollection.findOne(filter);
 }
 
 async function launchIDexists(launchid) {

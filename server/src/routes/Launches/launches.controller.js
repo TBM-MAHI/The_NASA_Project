@@ -1,8 +1,14 @@
 let validator = require("validator");
 let launchesModel = require("../../model/launches.model");
+let {getPagination} = require('../../services/query');
+
 
 async function httpgetAll_Launches(req, res) {
-  return res.status(200).json( await launchesModel.getAll_Launches());
+  let {
+    skip, limit
+  } = getPagination(req.query);
+
+return res.status(200).json(await launchesModel.getAll_Launches(skip, limit));
 }
 
 async function add_New_Launch(req, res) {
