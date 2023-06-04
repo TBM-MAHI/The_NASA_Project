@@ -43,6 +43,7 @@ function loadPlanetsDatafromCSV() {
   });
 }
 async function getAllPlanets() {
+  //query to mongoDB planets collection
   return await planets.find({}, [ 'keplerName','-_id' ]);
 }
 

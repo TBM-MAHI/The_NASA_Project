@@ -1,10 +1,12 @@
 const request = require("supertest");
 let app = require("../../app");
 let { ConnectDB,disconnectDB } = require("../../services/mongo.services");
+let { loadPlanetsDatafromCSV } = require('../../model/planets.model');
 
 describe("Launches API", () => {
   beforeAll( async () => {
     await ConnectDB();
+    await loadPlanetsDatafromCSV;
   })
   afterAll( async () => {
     await disconnectDB();
