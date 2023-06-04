@@ -18,3 +18,8 @@ async function loadServer() {
 }
 
 loadServer();
+
+/* 
+PORT = 8000
+MONGO_URL=mongodb+srv://mahoo:1RA8SMojOyIRNa5U@nasaprojectcluster.ijwur21.mongodb.net/?retryWrites=true&w=majority
+ */
