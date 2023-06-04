@@ -6,7 +6,7 @@ let { loadPlanetsDatafromCSV } = require('../../model/planets.model');
 describe("Launches API", () => {
   beforeAll( async () => {
     await ConnectDB();
-    await loadPlanetsDatafromCSV;
+    await loadPlanetsDatafromCSV();
   })
   afterAll( async () => {
     await disconnectDB();
