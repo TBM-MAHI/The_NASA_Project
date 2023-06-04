@@ -8,16 +8,27 @@ jobs:
     build:
       env:
         CI: true
+        #the env variable in our project needs to be RE-specified here 
+        #because the test suite will need the env variable when it is running in a
+        # CI server
+        MONGO_URL: mongodb://localhost/nasa
       strategy:
         matrix:
-          node-version: [16.x, 14.x]
+          node-version: [16.x, 14.x, 18.x]
+          mongodb-version: [ '4.4', '5.0', '6.0']
       runs-on: ubuntu-latest
       steps: 
+        - name: Git checkout
         - uses: actions/checkout@v2
         - name: Use Node.js version ${{matrix.node-version}}
           uses: actions/setup-node@v2 
           with:
             node-version: ${{matrix.node-version}}
+        - name: Start MongoDB Action
+          uses: supercharge/mongodb-github-action@1.9.0
+            with :
+              mongodb-version: ${{ matrix.mongodb-version }}
+
         - run: npm install
         - run: npm run build --prefix client
         - run: npm test
