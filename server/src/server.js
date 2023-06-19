@@ -18,7 +18,3 @@ async function loadServer() {
 }
 
 loadServer();
-
-/* 
-
- */

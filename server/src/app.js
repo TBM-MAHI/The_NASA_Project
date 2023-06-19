@@ -17,10 +17,10 @@ app.use(express.static(path.join(__dirname, "..", "public")));
 
 app.use('/v1', api);
 
-app.get('/*', (req, res) => res.status(200).
-  sendFile(path.join(__dirname, '..', 'public', 'index.html'))
+app.get("/*", (req, res) =>
+  res.status(200).sendFile(path.join(__dirname, "..", "public", "index.html"))
 );
-//console.log(path.join(__dirname, "..", "public"));
+console.log(path.join(__dirname, "..", "public"));
 
 
 module.exports = app;
