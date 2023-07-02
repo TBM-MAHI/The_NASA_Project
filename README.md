@@ -12,8 +12,16 @@ cd The_NASA_Project
 ```sh
 npm run install
 ```
-#### run client and server separately 
+#### run client and server separately on different Ports
 ```sh
 npm run client
 npm run server
+```
+#### run client and server in watch Mode
+```sh
+npm run watch
+```
+#### deploy the latest build of client and server
+```sh
+npm run deploy 
 ```
