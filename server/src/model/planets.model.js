@@ -25,8 +25,7 @@ function loadPlanetsDatafromCSV() {
       .on("error", (err) => reject(err))
       .on("end", async () => {
         let habitablePlanets = await getAllPlanets();
-
-        console.log(`${habitablePlanets.length } planets Found!`);
+         console.log(`${habitablePlanets.length } planets Found!`);
         resolve();
         //for (let names of habitablePlanetsNames) console.log(`\t ${names}`);
       });
