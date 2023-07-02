@@ -25,3 +25,7 @@ npm run watch
 ```sh
 npm run deploy 
 ```
+#### run test suite on client and server
+```sh
+npm run test 
+```
