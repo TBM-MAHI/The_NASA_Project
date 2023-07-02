@@ -17,7 +17,7 @@ npm run install
 npm run client
 npm run server
 ```
-#### run client and server in watch Mode
+#### run client and server both in watch Mode
 ```sh
 npm run watch
 ```
