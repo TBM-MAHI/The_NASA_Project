@@ -12,7 +12,7 @@ app.use(
     origin:'https://thespacexnasaproject.onrender.com/'
   })
 );
-app.use(morgan("combined"));
+app.use(morgan("short"));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "public")));
 
