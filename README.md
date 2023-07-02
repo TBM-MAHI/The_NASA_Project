@@ -6,17 +6,14 @@
 
 ```sh
 git clone https://github.com/TBM-MAHI/The_NASA_Project/
-```
-```sh
 cd The_NASA_Project
 ```
 ```sh
-npm install
+#### install clinet side dependencies only 
 ```
-##### Migrate the knexfile.js to setup database model In MySQL
+npm install client
 ```sh
-npx knex migrate:latest --knexfile ./src/knexfile.ts
-```
+
 ##### Run the Project
 ```sh
 npm run watch
