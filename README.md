@@ -8,11 +8,10 @@
 git clone https://github.com/TBM-MAHI/The_NASA_Project/
 cd The_NASA_Project
 ```
+### install clinet side dependencies only 
 ```sh
-#### install clinet side dependencies only 
-```
 npm install client
-```sh
+```
 
 ##### Run the Project
 ```sh
