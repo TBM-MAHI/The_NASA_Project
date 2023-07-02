@@ -2,18 +2,18 @@
 
 ## Installation
 
-##### Run the following commands to run this project on localhost
+#### Run the following commands to run this project on localhost
 
 ```sh
 git clone https://github.com/TBM-MAHI/The_NASA_Project/
 cd The_NASA_Project
 ```
-### install clinet side dependencies only 
+#### install both client and server side dependencies
 ```sh
-npm install client
+npm run install
 ```
-
-##### Run the Project
+#### run client and server separately 
 ```sh
-npm run watch
+npm run client
+npm run server
 ```
