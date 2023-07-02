@@ -11,7 +11,7 @@ app.use(
     origin: "http://localhost:3000",
   })
 );
-app.use(morgan("short"));
+app.use(morgan("combined"));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "public")));
 
@@ -20,7 +20,5 @@ app.use('/v1', api);
 app.get("/*", (req, res) =>
   res.status(200).sendFile(path.join(__dirname, "..", "public", "index.html"))
 );
-console.log(path.join(__dirname, "..", "public"));
-
 
 module.exports = app;

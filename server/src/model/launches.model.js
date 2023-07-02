@@ -39,12 +39,13 @@ async function loadspaceXlaunch_Data() {
   });
 
  if (launchRes) {
-    console.log(`launch Data already exists`);
+    console.log(`SpaceX launch Data already exists!`);
     return;
   } else {
     populate_spaceX_launch_Data();
   }
 }
+
 async function populate_spaceX_launch_Data() { 
   console.log(`Downloading Launch Data from SpacexAPI....`)
   let response = await axios.post(SPACEX_LAUNCHES_API_URL, {
@@ -86,8 +87,7 @@ async function populate_spaceX_launch_Data() {
   });
  
   if (response.status === 200) { 
-
-    let { docs } = response.data;
+  let { docs } = response.data;
     for (let doc of docs) {
       let {
         success,
@@ -108,12 +108,13 @@ async function populate_spaceX_launch_Data() {
         success,
       };
       saveLaunches(launch)
-      console.log(launch.flightNumber+". "+launch.missionName);
+      //console.log(launch.flightNumber+". "+launch.missionName);
     }
   }
   else {
-    console.log(`eroe fetch data from spacex API`)
+    console.log(`ERROR fetch data from spacex API`)
   }
+  console.log(`spaceX DATA populated`);
 }
 
 async function addNewLaunchMap(launch) {
@@ -174,7 +175,7 @@ async function abortlaunch_by_ID(launchid) {
       success: false,
     }, { new: true}
   );
-  console.log(res)
+  //console.log(res)
   return res;
 }
 

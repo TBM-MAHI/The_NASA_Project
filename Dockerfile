@@ -1,4 +1,3 @@
-# specify the node base image with your desired version node:<version>
 FROM node:lts-alpine
 
 WORKDIR /app
@@ -6,15 +5,15 @@ WORKDIR /app
 COPY package*.json ./
 
 COPY client/package*.json client/
-RUN npm install --prefix client --omit=dev
-
-COPY /client /client
-RUN npm run build --prefix client
+RUN npm run install-client --only=production
 
 COPY server/package*.json server/
-RUN npm install --prefix server --omit=dev
+RUN npm run install-server --only=production
 
-COPY /server /server
+COPY client/ client/
+RUN npm run build --prefix client
+
+COPY server/ server/
 
 USER node
 
