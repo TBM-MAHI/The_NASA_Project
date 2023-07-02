@@ -1,4 +1,15 @@
-### The_NASA_SpaceX_Project
+NASA SpaceX API Project
+==============================
+
+
+##### Live demo of the Application [here].
+## Features
+- ##### This is a Backend oriented project implemented with Node JS where the Front End was was pre-built using ReactJS..
+- ##### Particles Background Animationin in all Pages.
+- ##### A Form page with an input field that takes a image URL an input.
+- ##### Implements face-detection API from [Clarifai].
+- ##### Draws boxes around detected faces. 
+- ##### Detects multiple faces.
 
 ## Installation
 
@@ -29,3 +40,6 @@ npm run deploy
 ```sh
 npm run test 
 ```
+
+
+[here]: https://thespacexnasaproject.onrender.com/
